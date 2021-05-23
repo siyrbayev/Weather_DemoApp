@@ -21,21 +21,24 @@ class WeatherMapViewController: UIViewController {
     private var cityWeather: CityWeather? {
         didSet {
             if let cw = cityWeather {
+                let dayPart = getDayPart(current: cw.currentUnixDateTime, seconds: cw.timezoneSeconds, sunrise: cw.sys?.sunriseUnixDateTime, sunset: cw.sys?.sunsetUnixDateTime)
                 
-                weatherTypeLabel.text = String(cw.weather?.first?.main ?? "No type")
+                weatherTypeBackImageView.image = UIImage(named: cw.weather?.first?.main ?? WeatherTypes.Error.rawValue)
+                weatherTypeLabel.text = "\(dayPart), \(String(cw.weather?.first?.main ?? "No type" ))"
+                dayPartBackImageView.image = UIImage(named: dayPart )
                 cityNameLabel.text = cw.name
                 temperatureLabel.text = getCorrectTemp(cw.temp?.temp)
-                print(temperatureLabel.text ?? "0.0")
             }
         }
     }
     private var weatherApi = WeatherApi()
-
+    
     @IBOutlet weak var cityNameLabel: UILabel!
     @IBOutlet weak fileprivate var searchButton: UIButton!
     @IBOutlet weak fileprivate var temperatureLabel: UILabel!
     @IBOutlet weak fileprivate var weatherTypeLabel: UILabel!
-    @IBOutlet weak fileprivate var backgorundImageView: UIImageView!
+    @IBOutlet weak fileprivate var dayPartBackImageView: UIImageView!
+    @IBOutlet weak fileprivate var weatherTypeBackImageView: UIImageView!
     
     @IBAction func searchButtonPressed(_ sender: Any) {
         let vc = storyboard?.instantiateViewController(withIdentifier: SearchCityViewController.identifier) as! SearchCityViewController
@@ -46,14 +49,19 @@ class WeatherMapViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureLocationManager()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.setNavigationBarHidden(true, animated: false)
-        
+        if cityWeather == nil {
+            cityNameLabel.text = ""
+            temperatureLabel.text = ""
+            weatherTypeLabel.text = ""
+        }
     }
 }
-    
+
 // MARK: Internal func
 extension WeatherMapViewController {
     private func getCorrectTemp(_ temp: Double?) -> String{
@@ -79,12 +87,12 @@ extension WeatherMapViewController {
             switch response.result {
             case .success(_):
                 guard let data = response.data else{return}
-                    do {
-                        let cityWeatherJSON = try JSONDecoder().decode(CityWeather.self, from: data)
-                        cityWeather = cityWeatherJSON
-                    } catch {
-                        print(error)
-                    }
+                do {
+                    let cityWeatherJSON = try JSONDecoder().decode(CityWeather.self, from: data)
+                    cityWeather = cityWeatherJSON
+                } catch {
+                    print(error)
+                }
             case .failure(let error):
                 print("API_PATH failed to retrive data!")
                 print(error.errorDescription ?? "")
@@ -100,6 +108,7 @@ extension WeatherMapViewController {
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
             let vc = self.storyboard?.instantiateViewController(withIdentifier: SearchCityViewController.identifier) as! SearchCityViewController
+            vc.delegate = self
             self.navigationController?.pushViewController(vc, animated: true)
         }
         alertController.addAction(cancelAction)
@@ -113,21 +122,56 @@ extension WeatherMapViewController {
         
         self.present(alertController, animated: true, completion: nil)
     }
+    
+    private func getDayPart(current currentUnix: Int?,
+                            seconds timezone: Int?,
+                            sunrise sunriseUnix: Int?,
+                            sunset sunsetUnix: Int? ) -> DayParts.RawValue {
+        guard let timezone = timezone else { return "" }
+        guard let currentUnix = currentUnix else { return "" }
+        guard let sunriseUnix = sunriseUnix else { return "" }
+        guard let sunsetUnix = sunsetUnix else { return "" }
+        
+        let currentHour = unixToHour(currentUnix, timezone: timezone)
+        let sunsetHour = unixToHour(sunsetUnix, timezone: timezone)
+        let sunriseHour = unixToHour(sunriseUnix, timezone: timezone)
+        
+        switch currentHour {
+        case sunriseHour..<sunsetHour:
+            return DayParts.Day.rawValue
+        case sunsetHour...24:
+            return DayParts.Night.rawValue
+        case 0..<sunriseHour:
+            return DayParts.Night.rawValue
+        default:
+            return DayParts.Eror.rawValue
+        }
+    }
+    
+    private func unixToHour(_ unixTime: Int, timezone: Int) -> Int {
+        let date = Date(timeIntervalSince1970: TimeInterval(unixTime))
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "hh"
+        dateFormatter.timeZone = TimeZone(secondsFromGMT: timezone)
+        let localDate = dateFormatter.string(from: date)
+        
+        return Int(localDate) ?? 0
+    }
 }
 // MARK: CLLocationManagerDelegate
 extension WeatherMapViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         switch status {
-            case .denied:
-                showLocationDisabledPopUp()
-            case .authorizedAlways,.authorizedWhenInUse:
-                getCityWeatherByCordinate(lat: locationManager?.location?.coordinate.latitude ?? 0.0, lon: locationManager?.location?.coordinate.longitude ?? 0.0)
-            case .notDetermined:
-                print("notDetermined")
-            case .restricted:
-                print("restricted")
-            @unknown default:
-                fatalError()
+        case .denied:
+            showLocationDisabledPopUp()
+        case .authorizedAlways,.authorizedWhenInUse,.authorized:
+            getCityWeatherByCordinate(lat: locationManager?.location?.coordinate.latitude ?? 0.0, lon: locationManager?.location?.coordinate.longitude ?? 0.0)
+        case .notDetermined:
+            print("notDetermined")
+        case .restricted:
+            print("restricted")
+        @unknown default:
+            fatalError()
         }
     }
 }

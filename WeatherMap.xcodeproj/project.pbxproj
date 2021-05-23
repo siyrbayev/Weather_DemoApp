@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		0735C8FA2654FA8B00732EB5 /* SearchCityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0735C8F92654FA8B00732EB5 /* SearchCityViewController.swift */; };
-		0735C8FE2654FAC000732EB5 /* SearchCityTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0735C8FC2654FAC000732EB5 /* SearchCityTableViewCell.swift */; };
-		0735C8FF2654FAC000732EB5 /* SearchCityTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0735C8FD2654FAC000732EB5 /* SearchCityTableViewCell.xib */; };
 		075F7D242654075000464FF7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075F7D232654075000464FF7 /* AppDelegate.swift */; };
 		075F7D262654075000464FF7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075F7D252654075000464FF7 /* SceneDelegate.swift */; };
 		075F7D282654075000464FF7 /* WeatherMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075F7D272654075000464FF7 /* WeatherMapViewController.swift */; };
@@ -23,8 +21,6 @@
 
 /* Begin PBXFileReference section */
 		0735C8F92654FA8B00732EB5 /* SearchCityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCityViewController.swift; sourceTree = "<group>"; };
-		0735C8FC2654FAC000732EB5 /* SearchCityTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCityTableViewCell.swift; sourceTree = "<group>"; };
-		0735C8FD2654FAC000732EB5 /* SearchCityTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchCityTableViewCell.xib; sourceTree = "<group>"; };
 		075F7D202654075000464FF7 /* WeatherMap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherMap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		075F7D232654075000464FF7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		075F7D252654075000464FF7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -52,15 +48,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0735C8FB2654FA9200732EB5 /* Cells */ = {
-			isa = PBXGroup;
-			children = (
-				0735C8FC2654FAC000732EB5 /* SearchCityTableViewCell.swift */,
-				0735C8FD2654FAC000732EB5 /* SearchCityTableViewCell.xib */,
-			);
-			path = Cells;
-			sourceTree = "<group>";
-		};
 		075F7D172654075000464FF7 = {
 			isa = PBXGroup;
 			children = (
@@ -106,7 +93,6 @@
 		075F7D3C2654077600464FF7 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				0735C8FB2654FA9200732EB5 /* Cells */,
 				075F7D292654075000464FF7 /* Main.storyboard */,
 			);
 			path = Views;
@@ -207,7 +193,6 @@
 			files = (
 				075F7D332654075100464FF7 /* LaunchScreen.storyboard in Resources */,
 				075F7D302654075100464FF7 /* Assets.xcassets in Resources */,
-				0735C8FF2654FAC000732EB5 /* SearchCityTableViewCell.xib in Resources */,
 				075F7D2B2654075000464FF7 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -265,7 +250,6 @@
 				075F7D2E2654075000464FF7 /* WeatherMap.xcdatamodeld in Sources */,
 				075F7D242654075000464FF7 /* AppDelegate.swift in Sources */,
 				0735C8FA2654FA8B00732EB5 /* SearchCityViewController.swift in Sources */,
-				0735C8FE2654FAC000732EB5 /* SearchCityTableViewCell.swift in Sources */,
 				075F7D262654075000464FF7 /* SceneDelegate.swift in Sources */,
 				075F7D42265407C300464FF7 /* Weather.swift in Sources */,
 			);
