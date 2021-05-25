@@ -22,7 +22,7 @@ class WeatherMapViewController: UIViewController {
         didSet {
             if let cw = cityWeather {
                 let dayPart = getDayPart(current: cw.currentUnixDateTime, seconds: cw.timezoneSeconds, sunrise: cw.sys?.sunriseUnixDateTime, sunset: cw.sys?.sunsetUnixDateTime)
-                
+                constDegreeLabel.isHidden = false
                 weatherTypeBackImageView.image = UIImage(named: cw.weather?.first?.main ?? WeatherTypes.Error.rawValue)
                 weatherTypeLabel.text = "\(dayPart), \(String(cw.weather?.first?.main ?? "No type" ))"
                 dayPartBackImageView.image = UIImage(named: dayPart )
@@ -33,6 +33,7 @@ class WeatherMapViewController: UIViewController {
     }
     private var weatherApi = WeatherApi()
     
+    @IBOutlet weak var constDegreeLabel: UILabel!
     @IBOutlet weak var cityNameLabel: UILabel!
     @IBOutlet weak fileprivate var searchButton: UIButton!
     @IBOutlet weak fileprivate var temperatureLabel: UILabel!
@@ -48,30 +49,35 @@ class WeatherMapViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureLayout()
         configureLocationManager()
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        navigationController?.setNavigationBarHidden(true, animated: false)
         if cityWeather == nil {
             cityNameLabel.text = ""
             temperatureLabel.text = ""
             weatherTypeLabel.text = ""
+            constDegreeLabel.isHidden = true
         }
     }
 }
 
 // MARK: Internal func
 extension WeatherMapViewController {
+    func configureLayout() {
+        navigationController?.setNavigationBarHidden(true, animated: false)
+        searchButton.imageEdgeInsets = UIEdgeInsets(top: 18, left: 18, bottom: 18, right: 18)
+    }
+    
     private func getCorrectTemp(_ temp: Double?) -> String{
         guard let t = temp else {
             return ""
         }
         if t > -10 && t < 10 {
-            return "  0"+String(Int(t))+"˚"
+            return "0"+String(Int(t))
         } else{
-            return "  "+String(Int(t))+"˚"
+            return String(Int(t))
         }
         
     }
@@ -132,30 +138,18 @@ extension WeatherMapViewController {
         guard let sunriseUnix = sunriseUnix else { return "" }
         guard let sunsetUnix = sunsetUnix else { return "" }
         
-        let currentHour = unixToHour(currentUnix, timezone: timezone)
-        let sunsetHour = unixToHour(sunsetUnix, timezone: timezone)
-        let sunriseHour = unixToHour(sunriseUnix, timezone: timezone)
+        let currentHour = Date(timeIntervalSince1970: TimeInterval(currentUnix + timezone))
+        let sunsetHour = Date(timeIntervalSince1970: TimeInterval(sunsetUnix + timezone))
+        let sunriseHour = Date(timeIntervalSince1970: TimeInterval(sunriseUnix + timezone))
         
         switch currentHour {
         case sunriseHour..<sunsetHour:
             return DayParts.Day.rawValue
-        case sunsetHour...24:
-            return DayParts.Night.rawValue
-        case 0..<sunriseHour:
+        case sunsetHour...sunriseHour:
             return DayParts.Night.rawValue
         default:
             return DayParts.Eror.rawValue
         }
-    }
-    
-    private func unixToHour(_ unixTime: Int, timezone: Int) -> Int {
-        let date = Date(timeIntervalSince1970: TimeInterval(unixTime))
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "hh"
-        dateFormatter.timeZone = TimeZone(secondsFromGMT: timezone)
-        let localDate = dateFormatter.string(from: date)
-        
-        return Int(localDate) ?? 0
     }
 }
 // MARK: CLLocationManagerDelegate

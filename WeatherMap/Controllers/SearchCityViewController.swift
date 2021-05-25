@@ -15,6 +15,7 @@ class SearchCityViewController: UIViewController {
     public weak var delegate: WeatherMapViewControllerDelegate?
     public var setDayPartBackImageCallBack: (()->String)?
     public var setTypeBackImageCallBack: (()->String)?
+    @IBOutlet weak var lableView: UIView!
     @IBOutlet weak var clearSearchTextFieldButton: UIButton!
     @IBOutlet weak fileprivate var backButton: UIButton!
     @IBOutlet weak fileprivate var locationNameTextField: UITextField!
@@ -54,6 +55,12 @@ extension SearchCityViewController {
     private func configureLayout() {
         let tapOnView = UITapGestureRecognizer(target: self, action: #selector(searchFieldEndEditing))
         self.view.addGestureRecognizer(tapOnView)
+        
+        searchButton.layer.cornerRadius = 6
+        
+        lableView.layer.cornerRadius = 6
+        
+        backButton.imageEdgeInsets = UIEdgeInsets(top: 18, left: 9, bottom: 18, right: 9)
     }
     
     @objc private func searchFieldEndEditing() {

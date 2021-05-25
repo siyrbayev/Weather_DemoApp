@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0735C8FA2654FA8B00732EB5 /* SearchCityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0735C8F92654FA8B00732EB5 /* SearchCityViewController.swift */; };
+		0750AA78265D06950026CB3E /* Ubuntu in Resources */ = {isa = PBXBuildFile; fileRef = 0750AA77265D06950026CB3E /* Ubuntu */; };
 		075F7D242654075000464FF7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075F7D232654075000464FF7 /* AppDelegate.swift */; };
 		075F7D262654075000464FF7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075F7D252654075000464FF7 /* SceneDelegate.swift */; };
 		075F7D282654075000464FF7 /* WeatherMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075F7D272654075000464FF7 /* WeatherMapViewController.swift */; };
@@ -21,6 +22,7 @@
 
 /* Begin PBXFileReference section */
 		0735C8F92654FA8B00732EB5 /* SearchCityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCityViewController.swift; sourceTree = "<group>"; };
+		0750AA77265D06950026CB3E /* Ubuntu */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Ubuntu; sourceTree = "<group>"; };
 		075F7D202654075000464FF7 /* WeatherMap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherMap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		075F7D232654075000464FF7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		075F7D252654075000464FF7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -48,6 +50,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0750AA73265D05D40026CB3E /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				0750AA74265D05F40026CB3E /* Fonts */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		0750AA74265D05F40026CB3E /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				0750AA77265D06950026CB3E /* Ubuntu */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
 		075F7D172654075000464FF7 = {
 			isa = PBXGroup;
 			children = (
@@ -69,6 +87,7 @@
 		075F7D222654075000464FF7 /* WeatherMap */ = {
 			isa = PBXGroup;
 			children = (
+				0750AA73265D05D40026CB3E /* Resources */,
 				075F7D2C2654075000464FF7 /* WeatherMap.xcdatamodeld */,
 				075F7D342654075100464FF7 /* Info.plist */,
 				075F7D3A2654075A00464FF7 /* Extra */,
@@ -192,6 +211,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				075F7D332654075100464FF7 /* LaunchScreen.storyboard in Resources */,
+				0750AA78265D06950026CB3E /* Ubuntu in Resources */,
 				075F7D302654075100464FF7 /* Assets.xcassets in Resources */,
 				075F7D2B2654075000464FF7 /* Main.storyboard in Resources */,
 			);
